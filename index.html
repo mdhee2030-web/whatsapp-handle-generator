@@ -1,29 +1,322 @@
-مولّد اليوزرات الثلاثية النادرة
-اقتراحات ثلاثية أقل شيوعاً، مع تنظيم التحقق اليدوي لكل منصة.
-3 خانات فقط
-لا يوجد ضمان أن الاسم غير مستخدم؛ توفره يتغير باستمرار. الأداة تستبعد الأسماء الشائعة وتولّد تركيبات نادرة، ثم تتيح لك تسجيل نتيجة التحقق اليدوي من واتساب وإنستغرام وفيسبوك.
-إعدادات التوليد
-عدد الاقتراحات
-نمط الثلاثي
-          حروف نادرة + رقم (مثل q7x)
-          حرف + رقم + حرف
-          رقم + حرف + حرف
-          حرفان نادران + رقم
-          تنويع جميع الأنماط النادرة
-        
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مولّد اليوزرات الثلاثية النادرة</title>
+  <style>
+    :root{
+      --bg:#f6f8fc; --surface:#ffffff; --ink:#152033; --muted:#6b7280;
+      --primary:#2563eb; --primary2:#163f9f; --line:#e5eaf3;
+      --green:#087443; --red:#b42318; --gold:#9a6200; --gray:#5d697d;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#edf3ff 0,#f8f9fc 400px);color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+    .container{max-width:1140px;margin:auto;padding:28px 16px 50px}
+    header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+    h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px)}
+    .subtitle{margin:0;color:var(--muted);line-height:1.8}
+    .badge{white-space:nowrap;background:#e8efff;color:#1c4faf;border-radius:999px;padding:8px 12px;font-weight:700;font-size:12px}
+    .notice{background:#fff8e6;border:1px solid #f1d68c;border-radius:15px;padding:13px 15px;color:#785602;line-height:1.8;font-size:14px;margin-bottom:18px}
+    .layout{display:grid;grid-template-columns:340px 1fr;gap:18px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 9px 30px rgba(29,54,107,.06)}
+    h2{font-size:18px;margin:0 0 15px}
+    label{display:block;font-size:13px;font-weight:700;margin:12px 0 7px}
+    input,select,button{font:inherit}
+    input,select{width:100%;background:#fff;border:1px solid #dbe2ef;color:var(--ink);padding:11px;border-radius:10px}
+    .checks{display:grid;gap:9px;margin-top:8px}
+    .check{display:flex;gap:8px;align-items:center;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:13px}
+    button{border:0;border-radius:10px;padding:11px 13px;cursor:pointer;font-weight:700}
+    .primary{display:block;width:100%;margin-top:17px;background:var(--primary);color:#fff}
+    .primary:hover{background:var(--primary2)}
+    .secondary{background:#edf2ff;color:#244db1}
+    .danger{background:#fff0ef;color:#aa2018}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .toolbar input{flex:1;min-width:185px}
+    .results{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
+    .handle{position:relative;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
+    .handle strong{font-size:20px;display:block;text-align:left;direction:ltr;letter-spacing:.5px}
+    .score{font-size:11px;color:#1d5bbe;background:#ecf2ff;border-radius:999px;padding:4px 7px;display:inline-block;margin-top:8px}
+    .handle-actions{display:flex;gap:6px;margin-top:10px}
+    .handle-actions button{flex:1;padding:7px;font-size:12px;background:#f2f5fb;color:#273653}
+    .empty{color:var(--muted);padding:18px 0;line-height:1.8}
+    .table-wrap{overflow:auto}
+    table{min-width:760px;width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+    th{font-size:12px;color:var(--muted)}
+    .status{border:0;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:700;min-width:105px}
+    .pending{background:#edf0f5;color:var(--gray)}
+    .available{background:#e4f8ea;color:var(--green)}
+    .used{background:#feeceb;color:var(--red)}
+    .favorite{background:#fff2d6;color:var(--gold)}
+    .mini{padding:7px 9px;font-size:12px}
+    .manual-note{font-size:12px;color:var(--muted);line-height:1.7;margin:8px 0 0}
+    footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+    @media(max-width:790px){
+      header{display:block}.badge{display:inline-block;margin-top:10px}
+      .layout{grid-template-columns:1fr}.container{padding:18px 12px 35px}
+      .results{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div>
+        <h1>مولّد اليوزرات الثلاثية النادرة</h1>
+        <p class="subtitle">اقتراحات ثلاثية أقل شيوعاً، مع تنظيم التحقق اليدوي لكل منصة.</p>
+      </div>
+      <span class="badge">3 خانات فقط</span>
+    </header>
 
-لا تكرار داخل الاسم
+    <div class="notice">
+      لا يوجد ضمان أن الاسم غير مستخدم؛ توفره يتغير باستمرار. الأداة تستبعد الأسماء الشائعة وتولّد تركيبات نادرة،
+      ثم تتيح لك تسجيل نتيجة التحقق اليدوي من واتساب وإنستغرام وفيسبوك.
+    </div>
 
-استبعاد التركيبات السهلة والنطقية
+    <section class="layout">
+      <aside class="card">
+        <h2>إعدادات التوليد</h2>
 
-الرقم بالمنتصف فقط
-توليد يوزرات نادرة
-يعتمد التوليد على حروف أقل تداولاً مثل Q, X, Z, J, V, K مع أرقام، ويستبعد التسلسلات الواضحة.
-اقتراحات جديدة
+        <label for="count">عدد الاقتراحات</label>
+        <input id="count" type="number" min="1" max="250" value="40">
 
-تصدير CSV
-حذف المحفوظات
-قائمة التحقق اليدوي
-حدّث الحالة بعد التحقق بنفسك. لا يتم إرسال أي اسم أو بيانات خارج جهازك.
+        <label for="pattern">نمط الثلاثي</label>
+        <select id="pattern">
+          <option value="rareMix">حروف نادرة + رقم (مثل q7x)</option>
+          <option value="letterNumberLetter">حرف + رقم + حرف</option>
+          <option value="numberLetterLetter">رقم + حرف + حرف</option>
+          <option value="twoRareOneDigit">حرفان نادران + رقم</option>
+          <option value="all">تنويع جميع الأنماط النادرة</option>
+        </select>
 
-كل المحفوظات تبقى في متصفحك فقط باستخدام Local Storage.
+        <div class="checks">
+          <label class="check"><input id="noRepeats" type="checkbox" checked> لا تكرار داخل الاسم</label>
+          <label class="check"><input id="excludeVowels" type="checkbox" checked> استبعاد التركيبات السهلة والنطقية</label>
+          <label class="check"><input id="digitsOnlyMid" type="checkbox"> الرقم بالمنتصف فقط</label>
+        </div>
+
+        <button class="primary" id="generateBtn">توليد يوزرات نادرة</button>
+        <p class="manual-note">
+          يعتمد التوليد على حروف أقل تداولاً مثل Q, X, Z, J, V, K مع أرقام، ويستبعد التسلسلات الواضحة.
+        </p>
+      </aside>
+
+      <section class="card">
+        <h2>اقتراحات جديدة</h2>
+        <div class="toolbar">
+          <input id="search" type="search" placeholder="ابحث في الأسماء المحفوظة...">
+          <button class="secondary" id="exportBtn">تصدير CSV</button>
+          <button class="danger" id="clearBtn">حذف المحفوظات</button>
+        </div>
+        <div id="results" class="results"></div>
+      </section>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>قائمة التحقق اليدوي</h2>
+      <p class="manual-note" style="margin-top:-7px;margin-bottom:12px">
+        حدّث الحالة بعد التحقق بنفسك. لا يتم إرسال أي اسم أو بيانات خارج جهازك.
+      </p>
+      <div id="savedWrap"></div>
+    </section>
+
+    <footer>كل المحفوظات تبقى في متصفحك فقط باستخدام Local Storage.</footer>
+  </main>
+
+<script>
+  const STORAGE = 'rare_triple_handles_v2';
+  const rare = 'qxzjvk';
+  const consonants = 'bcdfghjklmnpqrstvwxyz';
+  const digits = '23456789';
+  const vowels = 'aeiou';
+  let generated = [];
+  let saved = JSON.parse(localStorage.getItem(STORAGE) || '[]');
+
+  const $ = id => document.getElementById(id);
+  const esc = str => String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+  function hasEasyPattern(s){
+    const lower = s.toLowerCase();
+    const sequences = ['abc','bcd','cde','123','234','345','456','567','678','789','000','111','222','333','444','555','666','777','888','999'];
+    if (sequences.includes(lower)) return true;
+    if (lower.includes('ali') || lower.includes('moh') || lower.includes('saud') || lower.includes('love')) return true;
+    return [...lower].filter(c => vowels.includes(c)).length >= 2;
+  }
+
+  function pick(chars){ return chars[Math.floor(Math.random() * chars.length)]; }
+
+  function makeByPattern(pattern){
+    const midOnly = $('digitsOnlyMid').checked;
+    const noRepeats = $('noRepeats').checked;
+    let value = '';
+    const randomPattern = ['rareMix','letterNumberLetter','numberLetterLetter','twoRareOneDigit'][Math.floor(Math.random()*4)];
+    const p = pattern === 'all' ? randomPattern : pattern;
+
+    if (p === 'rareMix') {
+      value = pick(rare) + pick(digits) + pick(rare + consonants);
+    } else if (p === 'letterNumberLetter') {
+      value = pick(rare + consonants) + pick(digits) + pick(rare + consonants);
+    } else if (p === 'numberLetterLetter') {
+      value = midOnly ? pick(rare) + pick(digits) + pick(rare + consonants) : pick(digits) + pick(rare + consonants) + pick(rare + consonants);
+    } else if (p === 'twoRareOneDigit') {
+      value = midOnly ? pick(rare) + pick(digits) + pick(rare) : pick(rare) + pick(rare) + pick(digits);
+    }
+
+    if(noRepeats && new Set(value).size !== value.length) return '';
+    if($('excludeVowels').checked && hasEasyPattern(value)) return '';
+    return value;
+  }
+
+  function rarityScore(name){
+    let score = 60;
+    for(const c of name.toLowerCase()){
+      if(rare.includes(c)) score += 12;
+      if(digits.includes(c)) score += 6;
+    }
+    return Math.min(99, score);
+  }
+
+  function generate(){
+    const count = Math.max(1, Math.min(250, Number($('count').value) || 40));
+    const pattern = $('pattern').value;
+    const set = new Set();
+    let guard = 0;
+
+    while(set.size < count && guard < count * 120){
+      const name = makeByPattern(pattern);
+      if(name) set.add(name);
+      guard++;
+    }
+    generated = [...set];
+    renderGenerated();
+  }
+
+  function renderGenerated(){
+    const target = $('results');
+    if(!generated.length){
+      target.innerHTML = '<div class="empty">اضغط «توليد يوزرات نادرة» لعرض اقتراحات ثلاثية.</div>';
+      return;
+    }
+    target.innerHTML = generated.map(name => `
+      <article class="handle">
+        <strong>${esc(name)}</strong>
+        <span class="score">ندرة تقديرية: ${rarityScore(name)}%</span>
+        <div class="handle-actions">
+          <button onclick="copyName('${name}')">نسخ</button>
+          <button onclick="saveName('${name}')">حفظ</button>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  window.copyName = async function(name){
+    try { await navigator.clipboard.writeText(name); alert('تم نسخ: ' + name); }
+    catch { prompt('انسخ الاسم:', name); }
+  }
+
+  window.saveName = function(name){
+    if(saved.some(x => x.name === name)){ alert('الاسم محفوظ مسبقاً.'); return; }
+    saved.unshift({
+      name,
+      whatsapp:'لم يتم التحقق',
+      instagram:'لم يتم التحقق',
+      facebook:'لم يتم التحقق',
+      favorite:false,
+      createdAt:new Date().toLocaleString('ar-SA')
+    });
+    persist();
+  }
+
+  function statusClass(value){
+    if(value === 'متاح') return 'available';
+    if(value === 'مستخدم') return 'used';
+    return 'pending';
+  }
+
+  function statusSelect(name, platform, value){
+    return `<select class="status ${statusClass(value)}" onchange="setPlatform('${name}','${platform}',this.value)">
+      ${['لم يتم التحقق','متاح','مستخدم'].map(v => `<option ${v===value?'selected':''}>${v}</option>`).join('')}
+    </select>`;
+  }
+
+  function renderSaved(){
+    const query = $('search').value.trim().toLowerCase();
+    const list = saved.filter(x => x.name.toLowerCase().includes(query));
+    const wrap = $('savedWrap');
+
+    if(!list.length){
+      wrap.innerHTML = '<div class="empty">لا توجد أسماء محفوظة بعد.</div>';
+      return;
+    }
+
+    wrap.innerHTML = `<div class="table-wrap"><table>
+      <thead>
+        <tr>
+          <th>اليوزر</th>
+          <th>واتساب</th>
+          <th>إنستغرام</th>
+          <th>فيسبوك</th>
+          <th>مفضّل</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(x => `<tr>
+          <td dir="ltr"><strong>${esc(x.name)}</strong></td>
+          <td>${statusSelect(x.name,'whatsapp',x.whatsapp)}</td>
+          <td>${statusSelect(x.name,'instagram',x.instagram)}</td>
+          <td>${statusSelect(x.name,'facebook',x.facebook)}</td>
+          <td><button class="mini ${x.favorite?'secondary':''}" onclick="toggleFavorite('${x.name}')">${x.favorite?'★ مفضّل':'☆ إضافة'}</button></td>
+          <td>
+            <button class="mini secondary" onclick="copyName('${x.name}')">نسخ</button>
+            <button class="mini danger" onclick="removeName('${x.name}')">حذف</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table></div>`;
+  }
+
+  window.setPlatform = function(name, platform, value){
+    saved = saved.map(x => x.name === name ? {...x,[platform]:value} : x);
+    persist();
+  }
+
+  window.toggleFavorite = function(name){
+    saved = saved.map(x => x.name === name ? {...x,favorite:!x.favorite} : x);
+    persist();
+  }
+
+  window.removeName = function(name){
+    saved = saved.filter(x => x.name !== name);
+    persist();
+  }
+
+  function persist(){
+    localStorage.setItem(STORAGE, JSON.stringify(saved));
+    renderSaved();
+  }
+
+  function exportCsv(){
+    const rows = [['username','whatsapp','instagram','facebook','favorite','created_at'],
+      ...saved.map(x => [x.name,x.whatsapp,x.instagram,x.facebook,x.favorite?'yes':'no',x.createdAt])];
+    const csv = '\ufeff' + rows.map(row => row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='rare-triple-handles.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  $('generateBtn').addEventListener('click',generate);
+  $('search').addEventListener('input',renderSaved);
+  $('exportBtn').addEventListener('click',exportCsv);
+  $('clearBtn').addEventListener('click',()=>{
+    if(confirm('هل تريد حذف جميع المحفوظات من هذا المتصفح؟')){ saved=[]; persist(); }
+  });
+
+  renderGenerated();
+  renderSaved();
+</script>
+</body>
+</html>
