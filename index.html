@@ -37,8 +37,12 @@
     .handle{position:relative;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
     .handle strong{font-size:20px;display:block;text-align:left;direction:ltr;letter-spacing:.5px}
     .score{font-size:11px;color:#1d5bbe;background:#ecf2ff;border-radius:999px;padding:4px 7px;display:inline-block;margin-top:8px}
-    .handle-actions{display:flex;gap:6px;margin-top:10px}
-    .handle-actions button{flex:1;padding:7px;font-size:12px;background:#f2f5fb;color:#273653}
+    .handle-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+    .handle-actions button{padding:7px;font-size:12px;background:#f2f5fb;color:#273653}
+    .platform-actions{display:flex;gap:6px;flex-wrap:wrap}
+    .platform-actions button{padding:7px 9px;font-size:12px;background:#f2f5fb;color:#273653}
+    .platform-actions .ig{background:#fff0f6;color:#a3135d}
+    .platform-actions .fb{background:#edf3ff;color:#1d4fa3}
     .empty{color:var(--muted);padding:18px 0;line-height:1.8}
     .table-wrap{overflow:auto}
     table{min-width:760px;width:100%;border-collapse:collapse;font-size:14px}
@@ -205,6 +209,8 @@
         <div class="handle-actions">
           <button onclick="copyName('${name}')">نسخ</button>
           <button onclick="saveName('${name}')">حفظ</button>
+          <button class="ig" onclick="openInstagram('${name}')">إنستغرام</button>
+          <button class="fb" onclick="openFacebookSearch('${name}')">فيسبوك</button>
         </div>
       </article>
     `).join('');
@@ -213,6 +219,15 @@
   window.copyName = async function(name){
     try { await navigator.clipboard.writeText(name); alert('تم نسخ: ' + name); }
     catch { prompt('انسخ الاسم:', name); }
+  }
+
+  // فتح صفحات التحقق اليدوي فقط؛ لا يوجد فحص أو جمع بيانات تلقائي.
+  window.openInstagram = function(name){
+    window.open('https://www.instagram.com/' + encodeURIComponent(name) + '/', '_blank', 'noopener');
+  }
+
+  window.openFacebookSearch = function(name){
+    window.open('https://www.facebook.com/search/top/?q=' + encodeURIComponent(name), '_blank', 'noopener');
   }
 
   window.saveName = function(name){
@@ -269,8 +284,12 @@
           <td>${statusSelect(x.name,'facebook',x.facebook)}</td>
           <td><button class="mini ${x.favorite?'secondary':''}" onclick="toggleFavorite('${x.name}')">${x.favorite?'★ مفضّل':'☆ إضافة'}</button></td>
           <td>
-            <button class="mini secondary" onclick="copyName('${x.name}')">نسخ</button>
-            <button class="mini danger" onclick="removeName('${x.name}')">حذف</button>
+            <div class="platform-actions">
+              <button class="mini secondary" onclick="copyName('${x.name}')">نسخ لواتساب</button>
+              <button class="mini ig" onclick="openInstagram('${x.name}')">إنستغرام</button>
+              <button class="mini fb" onclick="openFacebookSearch('${x.name}')">فيسبوك</button>
+              <button class="mini danger" onclick="removeName('${x.name}')">حذف</button>
+            </div>
           </td>
         </tr>`).join('')}
       </tbody>
